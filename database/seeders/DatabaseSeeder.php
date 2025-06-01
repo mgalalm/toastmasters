@@ -2,9 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Speech;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Workshop;
 use Illuminate\Database\Seeder;
+
+ // Assuming peech is a model similar to Speech
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +19,18 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::factory()
+            ->has(
+                Speech::factory()->count(5)
+            )
+            ->create([
+                'name' => 'Admin User',
+                'email' => 'admin@example.com',
+                'password' => bcrypt('admin'), // Use bcrypt for password hashing
+            ]);
+
+        Workshop::factory()
+            ->count(5)
+            ->create();
     }
 }

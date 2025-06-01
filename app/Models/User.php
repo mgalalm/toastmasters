@@ -52,6 +52,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+    // speeches
+    public function speeches()
+    {
+        return $this->hasMany(Speech::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
