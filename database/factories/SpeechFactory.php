@@ -6,7 +6,7 @@ use App\Enums\PathWay;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
- // Assuming PathWay is an enum defined in your application
+// Assuming PathWay is an enum defined in your application
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Speech>
  */
