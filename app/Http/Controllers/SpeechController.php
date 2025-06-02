@@ -98,6 +98,11 @@ class SpeechController extends Controller
      */
     public function destroy(Speech $speech)
     {
-        //
+        Gate::authorize('delete', $speech);
+
+        $speech->delete();
+
+        return to_route('speeches.index')
+            ->banner("Speech {$speech->title} has been deleted successfully.");
     }
 }

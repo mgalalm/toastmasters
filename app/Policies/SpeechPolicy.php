@@ -44,7 +44,7 @@ class SpeechPolicy
      */
     public function delete(User $user, Speech $speech): bool
     {
-        return false;
+        return $speech->user_id === $user->id;
     }
 
     /**

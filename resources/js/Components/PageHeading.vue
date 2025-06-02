@@ -1,63 +1,56 @@
 <template>
-    <div class="mb-2 lg:flex lg:items-center lg:justify-between">
-        <div class="min-w-0 flex-1">
-            <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">{{ title }}</h2>
-            <div class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-                <slot name="meta" class="mt-1 text-sm/6 text-gray-500"></slot>
-            </div>
+    <div>
+        <div>
+            <nav class="sm:hidden" aria-label="Back">
+                <a href="#" class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700">
+                    <ChevronLeftIcon class="-ml-1 mr-1 size-5 shrink-0 text-gray-400" aria-hidden="true" />
+                    Back
+                </a>
+            </nav>
+            <nav class="hidden sm:flex" aria-label="Breadcrumb">
+                <ol role="list" class="flex items-center space-x-4">
+                    <li>
+                        <div class="flex">
+                            <a href="#" class="text-sm font-medium text-gray-500 hover:text-gray-700">Jobs</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <ChevronRightIcon class="size-5 shrink-0 text-gray-400" aria-hidden="true" />
+                            <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                                >Engineering</a
+                            >
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <ChevronRightIcon class="size-5 shrink-0 text-gray-400" aria-hidden="true" />
+                            <a
+                                href="#"
+                                aria-current="page"
+                                class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700"
+                                >{{ title }}</a
+                            >
+                        </div>
+                    </li>
+                </ol>
+            </nav>
         </div>
-        <div class="mt-5 flex lg:ml-4 lg:mt-0">
-            <slot></slot>
-            <!-- Dropdown -->
-            <Menu as="div" class="relative ml-3 sm:hidden">
-                <MenuButton
-                    class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:ring-gray-400"
-                >
-                    More
-                    <ChevronDownIcon class="-mr-1 ml-1.5 size-5 text-gray-400" aria-hidden="true" />
-                </MenuButton>
-
-                <transition
-                    enter-active-class="transition ease-out duration-200"
-                    enter-from-class="transform opacity-0 scale-95"
-                    enter-to-class="transform opacity-100 scale-100"
-                    leave-active-class="transition ease-in duration-75"
-                    leave-from-class="transform opacity-100 scale-100"
-                    leave-to-class="transform opacity-0 scale-95"
-                >
-                    <MenuItems
-                        class="absolute right-0 z-10 -mr-1 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
-                    >
-                        <MenuItem v-slot="{ active }">
-                            <a
-                                href="#"
-                                :class="[
-                                    active ? 'bg-gray-100 outline-none' : '',
-                                    'block px-4 py-2 text-sm text-gray-700',
-                                ]"
-                                >Edit</a
-                            >
-                        </MenuItem>
-                        <MenuItem v-slot="{ active }">
-                            <a
-                                href="#"
-                                :class="[
-                                    active ? 'bg-gray-100 outline-none' : '',
-                                    'block px-4 py-2 text-sm text-gray-700',
-                                ]"
-                                >View</a
-                            >
-                        </MenuItem>
-                    </MenuItems>
-                </transition>
-            </Menu>
+        <div class="mt-2 md:flex md:items-center md:justify-between">
+            <div class="min-w-0 flex-1">
+                <h2 class="text-2xl/7 font-bold text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+                    {{ title }}
+                </h2>
+            </div>
+            <div class="mt-4 flex shrink-0 md:ml-4 md:mt-0">
+                <slot name="actions"> </slot>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ChevronDownIcon } from '@heroicons/vue/20/solid';
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid';
 defineProps({
     title: String,
 });
