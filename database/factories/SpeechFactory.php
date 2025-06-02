@@ -21,7 +21,7 @@ class SpeechFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'title' => str(fake()->sentence)->beforeLast('.')->title(),
+            'title' => str(fake()->sentence)->beforeLast('.')->value(),
             'length' => fake()->numberBetween(5, 20),
             'pathway' => fake()->randomElement(PathWay::cases())->value, // Assuming PathWay is an enum
             'objectives' => fake()->paragraph(),

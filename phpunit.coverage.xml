@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage>
+    <include>
+        <directory suffix=".php">app/</directory>
+    </include>
+    <exclude>
+        <directory>app/Console</directory>
+        <directory>app/Providers</directory>
+        <directory>app/Http/Middleware</directory>
+        <directory>app/Actions/Fortify</directory>
+
+        <!-- <file>app/Helpers/SkipThis.php</file> -->
+    </exclude>
+</coverage>
