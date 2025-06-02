@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Models\Workshop;
 use Illuminate\Database\Seeder;
 
- // Assuming peech is a model similar to Speech
+// Assuming peech is a model similar to Speech
 
 class DatabaseSeeder extends Seeder
 {
