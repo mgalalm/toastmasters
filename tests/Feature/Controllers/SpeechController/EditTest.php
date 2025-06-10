@@ -47,5 +47,5 @@ it('passes the speech to the view', function () {
 it('has pathways in the view', function () {
     actingAs($this->user)->get(route('speeches.edit', $this->speech))
         ->assertInertia(fn ($inertia) => $inertia->has('pathways')
-            ->where('pathways', PathWay::allPathways()));
+            ->where('pathways', PathWay::values()));
 });

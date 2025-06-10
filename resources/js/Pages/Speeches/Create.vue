@@ -107,6 +107,8 @@ const props = defineProps({
     },
 });
 
+console.log('Create.vue props:', props);
+
 const speechForm = useForm({
     title: props.speech.title || '',
     pathway: props.speech.pathway || '',

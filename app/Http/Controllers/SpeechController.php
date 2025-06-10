@@ -29,7 +29,7 @@ class SpeechController extends Controller
     {
 
         return inertia('Speeches/Create', [
-            'pathways' => PathWay::allPathways(),
+            'pathways' => PathWay::cases(),
         ]);
     }
 
@@ -67,7 +67,7 @@ class SpeechController extends Controller
         // return the speech as a resource to inertia
         return inertia('Speeches/Create', [
             'speech' => new SpeechResource($speech),
-            'pathways' => PathWay::allPathways(),
+            'pathways' => PathWay::cases(),
             'isEdit' => true,
         ]);
 

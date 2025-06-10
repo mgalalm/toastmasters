@@ -33,5 +33,5 @@ it('returns the correct component', function () {
 it('has pathways in the view', function () {
     actingAs($this->user)->get(route('speeches.create'))
         ->assertInertia(fn ($inertia) => $inertia->has('pathways')
-            ->where('pathways', PathWay::allPathways()));
+            ->where('pathways', PathWay::values()));
 });

@@ -20,12 +20,9 @@ enum PathWay: string
     case NotApplicable = 'Not Applicable';
     case Other = 'Other';
 
-    // List all pathways as an array pair of pathway name and value dynamically
-    public static function allPathways(): array
+    // get values as an array
+    public static function values(): array
     {
-        return array_map(fn ($pathway) => [
-            'value' => $pathway->name,
-            'label' => $pathway->value,
-        ], self::cases());
+        return array_column(self::cases(), 'value');
     }
 }
