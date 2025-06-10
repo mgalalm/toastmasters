@@ -20,7 +20,7 @@ class SpeechPolicy
      */
     public function view(User $user, Speech $speech): bool
     {
-        return $speech->user_id === $user->id;
+        return $this->isOwner($user, $speech);
     }
 
     /**
@@ -36,7 +36,8 @@ class SpeechPolicy
      */
     public function update(User $user, Speech $speech): bool
     {
-        return false;
+        // dd($speech->user_id === $user->id);
+        return $this->isOwner($user, $speech);
     }
 
     /**
@@ -44,7 +45,8 @@ class SpeechPolicy
      */
     public function delete(User $user, Speech $speech): bool
     {
-        return $speech->user_id === $user->id;
+        // Only allow deletion if the user is the owner of the speech
+        return $this->isOwner($user, $speech);
     }
 
     /**
@@ -61,5 +63,10 @@ class SpeechPolicy
     public function forceDelete(User $user, Speech $speech): bool
     {
         return false;
+    }
+
+    private function isOwner(User $user, Speech $speech): bool
+    {
+        return $speech->user_id === $user->id;
     }
 }

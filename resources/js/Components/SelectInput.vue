@@ -5,8 +5,6 @@ import '@vueform/multiselect/themes/default.css';
 
 <template>
     <Multiselect
-        v-model="selected"
-        :items="options"
         label="label"
         placeholder="Select an option"
         :native="true"

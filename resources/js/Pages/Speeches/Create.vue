@@ -2,7 +2,7 @@
     <AppLayout>
         <Container>
             <div class="mx-auto max-w-2xl p-4">
-                <form @submit.prevent="addSpeech">
+                <form @submit.prevent="submit">
                     <div>
                         <!-- <label for="title" class="block text-sm font-medium text-gray-700">Title</label> -->
                         <InputLabel for="title">Title</InputLabel>
@@ -97,36 +97,25 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    speech: {
+        type: Object,
+        default: () => ({}),
+    },
+    isEdit: {
+        type: Boolean,
+        default: false,
+    },
 });
-
-// console.log('pathways:', props.pathways);
 
 const speechForm = useForm({
-    title: '',
-    pathway: '',
-    length: '',
-    objectives: '',
-    evaluator_notes: '',
+    title: props.speech.title || '',
+    pathway: props.speech.pathway || '',
+    length: props.speech.length || '',
+    objectives: props.speech.objectives || '',
+    evaluator_notes: props.speech.evaluator_notes || '',
 });
 
-const addSpeech = () => {
-    speechForm.post(route('speeches.store'), {
-        onSuccess: () => {
-            // console.log('Speech created successfully');
-            // dump the form data to console
-            console.log('Form Data:', {
-                title: speechForm.title,
-                pathway: speechForm.pathway,
-                length: speechForm.length,
-                objectives: speechForm.objectives,
-                evaluator_notes: speechForm.evaluator_notes,
-            });
-
-            // speechForm.reset();
-        },
-        onError: (errors) => {
-            console.error(errors);
-        },
-    });
+const submit = () => {
+    props.isEdit ? speechForm.put(route('speeches.update', props.speech)) : speechForm.post(route('speeches.store'));
 };
 </script>

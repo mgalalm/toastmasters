@@ -14,6 +14,12 @@ it('non authenticated user can\'t access the speeches index', function () {
         ->assertRedirect(route('login'));
 });
 
+it('can access the index page', function () {
+    $user = User::factory()->create();
+    actingAs($user)->get(route('speeches.index'))
+        ->assertOk();
+});
+
 it('Users can\'t see the other users\'speeches', function () {
     $user = User::factory()->has(
         Speech::factory()->count(5)
@@ -23,11 +29,6 @@ it('Users can\'t see the other users\'speeches', function () {
     actingAs($otherUser)->get(route('speeches.index'))
         ->assertHasPaginatedResource('speeches', SpeechResource::collection([]));
 
-});
-it('can access the index page', function () {
-    $user = User::factory()->create();
-    actingAs($user)->get(route('speeches.index'))
-        ->assertOk();
 });
 
 it('should return the correct component', function () {
