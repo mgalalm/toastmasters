@@ -5,6 +5,7 @@ use App\Models\Speech;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -33,4 +34,14 @@ Route::middleware([
     Route::put('speeches/{speech}', [SpeechController::class, 'update'])->name('speeches.update')->can('update', 'speech');
     Route::delete('speeches/{speech}', [SpeechController::class, 'destroy'])->name('speeches.destroy')->can('delete', 'speech');
 
+});
+
+Route::get('auth/redirect', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('auth/callback', function () {
+    $user = Socialite::driver('google')->user();
+
+    // $user->token
 });
