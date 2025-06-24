@@ -1,9 +1,6 @@
 #!/bin/sh
 set -e
 
-echo "Running composer"
-composer install --no-dev --working-dir=/var/www/html
-
 # php artisan key:generate
 
 echo "Caching config..."
@@ -15,7 +12,5 @@ php artisan route:cache
 echo "Running migrations..."
 php artisan migrate --force
 
-# echo "Starting supervisord..."
-# exec /usr/bin/supervisord -c /etc/supervisord.conf
 
 exec "$@"
