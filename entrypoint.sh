@@ -1,3 +1,4 @@
+#!/bin/sh
 set -e
 
 echo "Running composer"
@@ -14,5 +15,7 @@ php artisan route:cache
 echo "Running migrations..."
 php artisan migrate --force
 
-echo "Starting supervisord..."
-exec /usr/bin/supervisord -c /etc/supervisord.conf
+# echo "Starting supervisord..."
+# exec /usr/bin/supervisord -c /etc/supervisord.conf
+
+exec "$@"

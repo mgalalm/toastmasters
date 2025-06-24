@@ -33,9 +33,9 @@ services:
         working_dir: /var/www/html
         volumes:
             - .:/var/www/html
+            - /var/www/html/vendor # Prevents vendor from being overwritten by the host
         depends_on:
             - mysql
-
     node:
         build:
             context: .
@@ -46,17 +46,6 @@ services:
             - /var/www/html/node_modules # Prevents node_modules from being overwritten by the host
         entrypoint: ['npm', 'run', 'build']
         depends_on:
-            - php
-    artisan:
-        build:
-            context: .
-            dockerfile: php.dockerfile
-        working_dir: /var/www/html
-        volumes:
-            - .:/var/www/html
-        entrypoint: ['php', '/var/www/html/artisan']
-        depends_on:
-            - mysql
             - php
 volumes:
     mysql-data:
