@@ -1,17 +1,4 @@
 services:
-    nginx:
-        build:
-            context: .
-            dockerfile: nginx.dockerfile
-        ports:
-            - '80:80'
-        volumes:
-            - .:/var/www/html
-        depends_on:
-            - mysql
-            - php
-            - node
-
     mysql:
         image: mysql:8.0.34
         ports:
@@ -29,7 +16,7 @@ services:
             context: .
             dockerfile: php.dockerfile
         ports:
-            - '9000'
+            - '80:80'
         working_dir: /var/www/html
         volumes:
             - .:/var/www/html
