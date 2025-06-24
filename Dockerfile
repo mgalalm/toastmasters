@@ -43,6 +43,7 @@ RUN sed -i 's/user = www-data/user = laravel/g' /usr/local/etc/php-fpm.d/www.con
 RUN sed -i 's/group = www-data/group = laravel/g' /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i 's/user nginx/user laravel/g' /etc/nginx/nginx.conf
 
+COPY --from=composer /app /var/www/html
 COPY --from=nodebuilder /app/public /var/www/html/public
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
