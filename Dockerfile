@@ -26,13 +26,15 @@ RUN apk update && apk add --no-cache \
     nginx \
     bash \
     curl \
-    supervisor
+    supervisor \
+    postgresql-dev
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-install pdo pdo_mysql mysqli pdo_pgsql
 
 RUN rm /etc/nginx/http.d/default.conf
 ADD conf/nginx.conf /etc/nginx/http.d/nginx.conf
+
 
 COPY conf/supervisord.conf /etc/supervisord.conf
 
@@ -45,6 +47,10 @@ RUN sed -i 's/user nginx/user laravel/g' /etc/nginx/nginx.conf
 
 COPY --from=composer /app /var/www/html
 COPY --from=nodebuilder /app/public /var/www/html/public
+
+RUN chown -R laravel:laravel /var/www/html/storage /var/www/html/bootstrap/cache \
+ && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
