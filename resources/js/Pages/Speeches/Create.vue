@@ -4,7 +4,7 @@
             <div class="mx-auto max-w-2xl p-4">
                 <div class="mb-3 flex items-center justify-between">
                     <h1 class="text-2xl font-bold">Create Speech</h1>
-                    <div class="text-sm/6" v-if="!speechForm.workshopDate">
+                    <div class="text-sm/6">
                         <a
                             href="#"
                             class="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
@@ -17,7 +17,7 @@
                     <!-- Calendar shown only if toggled -->
                     <div v-if="showDatePicker" class="mt-2">
                         <VueDatePicker
-                            v-model="speechForm.workshopDate"
+                            v-model="workshopDate"
                             :min-date="minDate"
                             :max-date="futureSixMonths"
                             :allowed-dates="props.workshops.map((w) => new Date(w.date))"
@@ -125,14 +125,14 @@
 
 <script setup>
 import Container from '@/Components/Container.vue';
-import AppLayout from '@/Layouts/AppLayout.vue';
-import TextInput from '@/Components/TextInput.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import TextArea from '@/Components/TextArea.vue';
-import { useForm } from '@inertiajs/vue3';
-import SelectInput from '@/Components/SelectInput.vue';
 import InputError from '@/Components/InputError.vue';
-import { ref, computed, watch } from 'vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import SelectInput from '@/Components/SelectInput.vue';
+import TextArea from '@/Components/TextArea.vue';
+import TextInput from '@/Components/TextInput.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { useForm } from '@inertiajs/vue3';
+import { computed, ref } from 'vue';
 
 const showDatePicker = ref(false);
 const minDate = new Date('2025-09-11');
@@ -169,6 +169,10 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    workshop_id: {
+        type: [Number, null],
+        default: null,
+    },
 });
 
 const speechForm = useForm({
@@ -179,24 +183,41 @@ const speechForm = useForm({
     evaluator_notes: props.speech.evaluator_notes || '',
     level: props.speech.level || '',
     project: props.speech.project || '',
-    workshopDate: props.speech.workshop?.date || null, // date selected in calendar
-    workshop_id: props.speech.workshop_id || null, // actual id to save
+    // workshopDate: props.speech.workshop?.date || null, // date selected in calendar
+    workshop_id: props.workshop_id || null, // actual id to save
 });
 
+// console.log('Initial speech form:', speechForm.workshop_id);
+
 const dateToIdMap = Object.fromEntries(props.workshops.map((w) => [w.date, w.id]));
+const idToDateMap = Object.fromEntries(props.workshops.map((w) => [w.id, w.date]));
+
+const workshopDate = computed({
+    get() {
+        return speechForm.workshop_id ? new Date(idToDateMap[speechForm.workshop_id]) : null;
+    },
+    set(newDate) {
+        if (newDate) {
+            const formattedDate = newDate.toISOString().split('T')[0];
+            speechForm.workshop_id = dateToIdMap[formattedDate] || null;
+        } else {
+            speechForm.workshop_id = null;
+        }
+    },
+});
 
 // console.log(props.workshops[0].date);
 
-watch(
-    () => speechForm.workshopDate,
-    (newDate) => {
-        // convert Thu Sep 25 2025 20:41:00 GMT+0100 (Irish Standard Time) to YYYY-MM-DD
-        const formattedDate = newDate.toISOString().split('T')[0];
-        // console.log('Selected date changed:', formattedDate);
-        speechForm.workshop_id = dateToIdMap[formattedDate] || null;
-        // console.log('Updated workshop_id:', speechForm.workshop_id);
-    },
-);
+// watch(
+//     () => speechForm.workshopDate,
+//     (newDate) => {
+//         // convert Thu Sep 25 2025 20:41:00 GMT+0100 (Irish Standard Time) to YYYY-MM-DD
+//         const formattedDate = newDate.toISOString().split('T')[0];
+//         // console.log('Selected date changed:', formattedDate);
+//         speechForm.workshop_id = dateToIdMap[formattedDate] || null;
+//         // console.log('Updated workshop_id:', speechForm.workshop_id);
+//     },
+// );
 
 const submit = () => {
     props.isEdit ? speechForm.put(route('speeches.update', props.speech)) : speechForm.post(route('speeches.store'));

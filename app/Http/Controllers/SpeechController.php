@@ -8,7 +8,6 @@ use App\Http\Resources\SpeechResource;
 use App\Http\Resources\WorkshopSelectResource;
 use App\Models\Speech;
 use App\Models\Workshop;
-use App\Services\WorkshopDateService;
 use Illuminate\Http\Request;
 
 class SpeechController extends Controller
@@ -28,13 +27,15 @@ class SpeechController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $workshops = Workshop::available()->get();
+        $workshopId = $request->query('workshop_id');
 
         return inertia('Speeches/Create', [
             'pathways' => PathWay::cases(),
             'workshops' => WorkshopSelectResource::collection($workshops),
+            'workshop_id' => $workshopId,
         ]);
     }
 
@@ -69,7 +70,7 @@ class SpeechController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Speech $speech, WorkshopDateService $workshopDateService)
+    public function edit(Speech $speech)
     {
         // return the speech as a resource to inertia
         $workshops = Workshop::available()->get();
@@ -79,6 +80,7 @@ class SpeechController extends Controller
             'pathways' => PathWay::cases(),
             'workshops' => WorkshopSelectResource::collection($workshops),
             'isEdit' => true,
+            'workshop_id' => $speech->workshop_id,
         ]);
     }
 

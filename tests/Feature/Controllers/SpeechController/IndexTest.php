@@ -37,7 +37,7 @@ it('should return the correct component', function () {
         ->assertComponent('Speeches/Index');
 });
 
-it('passes the products to the view', function () {
+it('passes the speeches to the view', function () {
     // create speeches
     $user = User::factory()
         ->has(
@@ -45,7 +45,7 @@ it('passes the products to the view', function () {
         )->create();
 
     $speeches = Speech::all();
-    $speeches->load('speaker');
+    $speeches->load(['speaker', 'evaluator']);
 
     actingAs($user)->get(route('speeches.index'))
         ->assertHasPaginatedResource('speeches', SpeechResource::collection($speeches->reverse()));

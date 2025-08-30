@@ -38,6 +38,7 @@
                         <button
                             type="button"
                             class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:ring-white/5 dark:hover:bg-white/20"
+                            @click="router.get(route('speeches.create', { workshop_id: workshop.id }))"
                         >
                             <PencilIcon
                                 class="-ml-0.5 mr-1.5 size-5 text-gray-400 dark:text-white"
@@ -46,13 +47,6 @@
                             Add Speech
                         </button>
                     </span>
-
-                    <!-- <span class="ml-3 hidden sm:block">
-        <button type="button" class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:ring-white/5 dark:hover:bg-white/20">
-          <LinkIcon class="-ml-0.5 mr-1.5 size-5 text-gray-400 dark:text-white" aria-hidden="true" />
-          View
-        </button>
-      </span> -->
 
                     <div class="flex justify-between">
                         <span class="sm:ml-3">
@@ -190,25 +184,10 @@
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import Container from '@/Components/Container.vue';
-import PageHeading from '@/Components/PageHeading.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { CalendarIcon, CheckIcon, ChevronDownIcon, MapPinIcon, PencilIcon, ScaleIcon } from '@heroicons/vue/20/solid';
 import { router } from '@inertiajs/vue3';
-import {
-    PencilIcon,
-    TrashIcon,
-    CheckIcon,
-    EnvelopeIcon,
-    PhoneIcon,
-    BriefcaseIcon,
-    CalendarIcon,
-    ChevronDownIcon,
-    CurrencyDollarIcon,
-    LinkIcon,
-    ScaleIcon,
-    MapPinIcon,
-    SpeakerWaveIcon,
-} from '@heroicons/vue/20/solid';
 
 import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
