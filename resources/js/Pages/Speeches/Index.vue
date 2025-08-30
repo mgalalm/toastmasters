@@ -20,14 +20,16 @@
                     </Link> -->
                 </li>
             </ul>
+            <Pagination :meta="speeches.meta" />
         </Container>
     </AppLayout>
 </template>
 
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import Container from '@/Components/Container.vue';
 import PageHeading from '@/Components/PageHeading.vue';
+import Pagination from '@/Components/Pagination.vue';
+import AppLayout from '@/Layouts/AppLayout.vue';
 import { relativeDate } from '@/Utilities/date.js';
 import { Link } from '@inertiajs/vue3';
 

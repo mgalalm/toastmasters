@@ -40,6 +40,11 @@ class SpeechResource extends Resource
                     ->options(
                         collect(array_column(PathWay::cases(), 'value', 'value')),
                     ),
+                Select::make('workshop_id')
+                    ->relationship('workshop', 'title')
+                    // ->orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(10)
+                    ->required(),
+                // ->searchable(),
                 Textarea::make('objectives')
                     ->required()
                     ->columnSpanFull(),
