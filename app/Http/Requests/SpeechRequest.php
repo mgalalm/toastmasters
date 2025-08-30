@@ -30,6 +30,7 @@ class SpeechRequest extends FormRequest
             'objectives' => 'required',
             'evaluator_notes' => 'nullable|string',
             'pathway' => ['required', Rule::enum(PathWay::class)],
+            'workshop_id' => 'nullable|exists:workshops,id',
         ];
     }
 }

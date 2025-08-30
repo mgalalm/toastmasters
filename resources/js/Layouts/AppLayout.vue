@@ -32,12 +32,36 @@ const logout = () => {
 };
 
 const menu = [
-    {
+    /*{
         name: 'Dashboard',
         url: route('dashboard'),
         route: 'dashboard',
         when: () => usePage().props.auth.user,
+    },*/
+    {
+        name: 'Workshops',
+        url: route('workshops.index'),
+        route: 'workshops.index',
+        when: () => usePage().props.auth.user,
     },
+    // {
+    //     name: 'Add Workshop',
+    //     url: route('workshops.create'),
+    //     route: 'workshops.create',
+    //     // when: () => usePage().props.permissions.create_products,
+    // },
+    // {
+    //     name: 'Profile',
+    //     url: route('profile.show'),
+    //     route: 'profile.show',
+    //     when: () => usePage().props.auth.user,
+    // },
+    // {
+    //     name: 'API Tokens',
+    //     url: route('api-tokens.index'),
+    //     route: 'api-tokens.index',
+    //     when: () => usePage().props.jetstream.hasApiFeatures,
+    // },
     {
         name: 'Speeches',
         url: route('speeches.index'),
@@ -67,7 +91,7 @@ const menu = [
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('workshops.index')">
                                     <ApplicationMark class="block h-9 w-auto" />
                                 </Link>
                             </div>
@@ -197,8 +221,11 @@ const menu = [
                     class="sm:hidden"
                 >
                     <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                        <ResponsiveNavLink
+                            :href="route('workshops.index')"
+                            :active="route().current('workshops.index')"
+                        >
+                            Workshops
                         </ResponsiveNavLink>
                     </div>
 

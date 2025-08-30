@@ -15,6 +15,18 @@ class Speech extends Model
     // speaker
     public function speaker()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // workshop
+    public function workshop()
+    {
+        return $this->belongsTo(Workshop::class, 'workshop_id');
+    }
+
+    // evaluator
+    public function evaluator()
+    {
+        return $this->belongsTo(User::class, 'evaluator_id');
     }
 }

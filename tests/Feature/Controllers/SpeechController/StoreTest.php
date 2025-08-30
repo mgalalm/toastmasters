@@ -58,3 +58,12 @@ it('requires a valid pathway', function ($value) {
     'empty pathway' => '',
     'invalid pathway' => 'Invalid Pathway',
 ]);
+
+it('requires a valid workshop id if provided', function ($value) {
+    $this->data['workshop_id'] = $value;
+
+    actingAs($this->user)->post(route('speeches.store'), $this->data)
+        ->assertInvalid('workshop_id');
+})->with([
+    'invalid workshop id' => 999,
+]);

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\SpeechController;
+use App\Http\Controllers\WorkshopController;
 use App\Models\Speech;
+use App\Models\Workshop;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +35,15 @@ Route::middleware([
     Route::get('speeches/{speech}/edit', [SpeechController::class, 'edit'])->name('speeches.edit')->can('update', 'speech');
     Route::put('speeches/{speech}', [SpeechController::class, 'update'])->name('speeches.update')->can('update', 'speech');
     Route::delete('speeches/{speech}', [SpeechController::class, 'destroy'])->name('speeches.destroy')->can('delete', 'speech');
+
+    // Workshop
+    Route::get('workshops', [WorkshopController::class, 'index'])->name('workshops.index')->can('viewAny', Workshop::class);
+    Route::get('workshops/create', [WorkshopController::class, 'create'])->name('workshops.create')->can('create', Workshop::class);
+    Route::post('workshops', [WorkshopController::class, 'store'])->name('workshops.store')->can('create', Workshop::class);
+    Route::get('workshops/{workshop}', [WorkshopController::class, 'show'])->name('workshops.show')->can('view', 'workshop');
+    Route::get('workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->name('workshops.edit')->can('update', 'workshop');
+    Route::put('workshops/{workshop}', [WorkshopController::class, 'update'])->name('workshops.update')->can('update', 'workshop');
+    Route::delete('workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy')->can('delete', 'workshop');
 
 });
 

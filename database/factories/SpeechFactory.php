@@ -26,6 +26,9 @@ class SpeechFactory extends Factory
             'pathway' => fake()->randomElement(PathWay::cases())->value, // Assuming PathWay is an enum
             'objectives' => fake()->paragraph(),
             'evaluator_notes' => fake()->paragraph(),
+            'level' => fake()->numberBetween(1, 7),
+            'project' => fake()->numberBetween(1, 4),
+
         ];
     }
 }

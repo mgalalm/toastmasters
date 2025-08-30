@@ -59,8 +59,6 @@ import {
     MapPinIcon,
     PencilIcon,
     TrashIcon,
-    ShoppingBagIcon,
-    CheckBadgeIcon,
 } from '@heroicons/vue/20/solid';
 
 // import { useRouter } from '@inertiajs/vue3';

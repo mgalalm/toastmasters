@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\PathWay;
 use App\Http\Requests\SpeechRequest;
 use App\Http\Resources\SpeechResource;
+use App\Http\Resources\WorkshopSelectResource;
 use App\Models\Speech;
+use App\Models\Workshop;
+use App\Services\WorkshopDateService;
 use Illuminate\Http\Request;
 
 class SpeechController extends Controller
@@ -15,7 +18,7 @@ class SpeechController extends Controller
      */
     public function index(Request $request)
     {
-        $speeches = $request->user()->speeches()->latest('id')->paginate();
+        $speeches = $request->user()->speeches()->with(['speaker', 'evaluator'])->latest('id')->paginate();
 
         return inertia('Speeches/Index', [
             'speeches' => SpeechResource::collection($speeches),
@@ -27,9 +30,11 @@ class SpeechController extends Controller
      */
     public function create()
     {
+        $workshops = Workshop::available()->get();
 
         return inertia('Speeches/Create', [
             'pathways' => PathWay::cases(),
+            'workshops' => WorkshopSelectResource::collection($workshops),
         ]);
     }
 
@@ -54,6 +59,8 @@ class SpeechController extends Controller
     {
 
         // return the speech as a resource to inertia
+        $speech->load(['speaker', 'evaluator']);
+
         return inertia('Speeches/Show', [
             'speech' => new SpeechResource($speech),
         ]);
@@ -62,15 +69,17 @@ class SpeechController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Speech $speech)
+    public function edit(Speech $speech, WorkshopDateService $workshopDateService)
     {
         // return the speech as a resource to inertia
+        $workshops = Workshop::available()->get();
+
         return inertia('Speeches/Create', [
             'speech' => new SpeechResource($speech),
             'pathways' => PathWay::cases(),
+            'workshops' => WorkshopSelectResource::collection($workshops),
             'isEdit' => true,
         ]);
-
     }
 
     /**

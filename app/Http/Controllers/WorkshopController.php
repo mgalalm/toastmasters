@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SpeechResource;
+use App\Http\Resources\WorkshopAssignmentResource;
+use App\Http\Resources\WorkshopResource;
 use App\Models\Workshop;
 use Illuminate\Http\Request;
 
@@ -12,7 +15,12 @@ class WorkshopController extends Controller
      */
     public function index()
     {
-        //
+        $workshops = Workshop::orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(10);
+
+        return inertia('Workshops/Index', [
+            'workshops' => WorkshopResource::collection($workshops),
+
+        ]);
     }
 
     /**
@@ -36,7 +44,13 @@ class WorkshopController extends Controller
      */
     public function show(Workshop $workshop)
     {
-        //
+        $workshop->load(['assignments', 'speeches']);
+
+        return inertia('Workshops/Show', [
+            'workshop' => new WorkshopResource($workshop),
+            'assignments' => fn () => WorkshopAssignmentResource::collection($workshop->assignments()->with('user')->get()),
+            'speeches' => fn () => SpeechResource::collection($workshop->speeches()->with(['speaker', 'evaluator'])->get()),
+        ]);
     }
 
     /**

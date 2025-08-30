@@ -20,9 +20,13 @@ class SpeechResource extends JsonResource
             'created_at' => $this->created_at,
             'length' => $this->length,
             'pathway' => $this->pathway,
+            'level' => $this->level,
+            'project' => $this->project,
             'objectives' => $this->objectives,
             'evaluator_notes' => $this->evaluator_notes,
-
+            'speaker' => $this->speaker?->name ?? 'Unassigned',
+            'evaluator' => $this->evaluator?->name ?? 'Unassigned',
+            'profile_photo' => $this->speaker?->profile_photo_url ?? '',
         ];
     }
 }

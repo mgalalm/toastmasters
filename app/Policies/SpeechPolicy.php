@@ -37,7 +37,7 @@ class SpeechPolicy
     public function update(User $user, Speech $speech): bool
     {
         // dd($speech->user_id === $user->id);
-        return $this->isOwner($user, $speech);
+        return $this->isOwner($user, $speech) or $user->isAdmin();
     }
 
     /**
@@ -46,7 +46,7 @@ class SpeechPolicy
     public function delete(User $user, Speech $speech): bool
     {
         // Only allow deletion if the user is the owner of the speech
-        return $this->isOwner($user, $speech);
+        return $this->isOwner($user, $speech) or $user->isAdmin();
     }
 
     /**
