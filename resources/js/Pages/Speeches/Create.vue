@@ -19,9 +19,12 @@
                         <VueDatePicker
                             v-model="workshopDate"
                             :min-date="minDate"
-                            :max-date="futureSixMonths"
+                            :max-date="maxDate"
                             :allowed-dates="props.workshops.map((w) => new Date(w.date))"
                             :enable-time-picker="false"
+                            locale="en-GB"
+                            format="dd/MM/yyyy"
+                            prevent-min-max-navigation
                         ></VueDatePicker>
                     </div>
                 </div>
@@ -135,14 +138,6 @@ import { useForm } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
 const showDatePicker = ref(false);
-const minDate = new Date('2025-09-11');
-const futureSixMonths = new Date();
-futureSixMonths.setMonth(minDate.getMonth() + 6);
-
-// const disabledDates = ref([
-//   new Date(), // Today
-//   { days: [0, 6] } // Weekends
-// ]);
 
 const toggleDatePicker = () => {
     showDatePicker.value = !showDatePicker.value;
@@ -175,6 +170,16 @@ const props = defineProps({
     },
 });
 
+const minDate = computed(() => {
+    if (!props.workshops.length) return null;
+    return new Date(props.workshops[0].date); // first workshop
+});
+
+const maxDate = computed(() => {
+    if (!props.workshops.length) return null;
+    return new Date(props.workshops[props.workshops.length - 1].date); // last workshop
+});
+
 const speechForm = useForm({
     title: props.speech.title || '',
     pathway: props.speech.pathway || '',
@@ -183,11 +188,8 @@ const speechForm = useForm({
     evaluator_notes: props.speech.evaluator_notes || '',
     level: props.speech.level || '',
     project: props.speech.project || '',
-    // workshopDate: props.speech.workshop?.date || null, // date selected in calendar
     workshop_id: props.workshop_id || null, // actual id to save
 });
-
-// console.log('Initial speech form:', speechForm.workshop_id);
 
 const dateToIdMap = Object.fromEntries(props.workshops.map((w) => [w.date, w.id]));
 const idToDateMap = Object.fromEntries(props.workshops.map((w) => [w.id, w.date]));
@@ -206,25 +208,11 @@ const workshopDate = computed({
     },
 });
 
-// console.log(props.workshops[0].date);
-
-// watch(
-//     () => speechForm.workshopDate,
-//     (newDate) => {
-//         // convert Thu Sep 25 2025 20:41:00 GMT+0100 (Irish Standard Time) to YYYY-MM-DD
-//         const formattedDate = newDate.toISOString().split('T')[0];
-//         // console.log('Selected date changed:', formattedDate);
-//         speechForm.workshop_id = dateToIdMap[formattedDate] || null;
-//         // console.log('Updated workshop_id:', speechForm.workshop_id);
-//     },
-// );
-
 const submit = () => {
     props.isEdit ? speechForm.put(route('speeches.update', props.speech)) : speechForm.post(route('speeches.store'));
 };
 
 const cancel = () => {
-    // Logic to handle cancel action, e.g., redirect to the speeches list
     window.history.back();
 };
 </script>

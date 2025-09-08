@@ -20,7 +20,7 @@ class SpeechPolicy
      */
     public function view(User $user, Speech $speech): bool
     {
-        return $this->isOwner($user, $speech);
+        return $this->isOwner($user, $speech) or $user->isAdmin();
     }
 
     /**

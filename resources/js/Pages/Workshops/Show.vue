@@ -143,7 +143,8 @@
                 <li
                     v-for="speech in speeches"
                     :key="speech.id"
-                    class="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow dark:divide-white/10 dark:bg-gray-800/50 dark:shadow-none dark:outline dark:outline-1 dark:-outline-offset-1 dark:outline-white/10"
+                    class="col-span-1 flex cursor-pointer flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow hover:bg-gray-50 dark:divide-white/10 dark:bg-gray-800/50 dark:shadow-none dark:outline dark:outline-1 dark:-outline-offset-1 dark:outline-white/10 dark:hover:bg-gray-700"
+                    @click="router.get(route('speeches.show', { id: speech.id }))"
                 >
                     <div class="flex flex-1 flex-col p-8">
                         <img
@@ -170,6 +171,7 @@
                                 <a
                                     :href="`mailto:${speech.email}`"
                                     class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-white"
+                                    @click.stop
                                 >
                                     <ScaleIcon class="size-7 text-gray-400 dark:text-gray-500" aria-hidden="true" />
                                     {{ speech.evaluator }}
