@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SpeechController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkshopController;
 use App\Models\Speech;
 use App\Models\Workshop;
@@ -44,6 +45,7 @@ Route::middleware([
     Route::get('workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->name('workshops.edit')->can('update', 'workshop');
     Route::put('workshops/{workshop}', [WorkshopController::class, 'update'])->name('workshops.update')->can('update', 'workshop');
     Route::delete('workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy')->can('delete', 'workshop');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('users.show')->can('view', 'user');
 
 });
 

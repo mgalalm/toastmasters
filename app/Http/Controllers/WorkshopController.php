@@ -15,7 +15,7 @@ class WorkshopController extends Controller
      */
     public function index()
     {
-        $workshops = Workshop::orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(10);
+        $workshops = Workshop::orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(5);
 
         return inertia('Workshops/Index', [
             'workshops' => WorkshopResource::collection($workshops),

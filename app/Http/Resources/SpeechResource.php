@@ -18,16 +18,17 @@ class SpeechResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'created_at' => $this->created_at,
-            'length' => $this->length,
+            'length' => (int) $this->length,
             'pathway' => $this->pathway,
             'level' => $this->level,
             'project' => $this->project,
             'objectives' => $this->objectives,
             'evaluator_notes' => $this->evaluator_notes,
-            'speaker' => $this->speaker?->name ?? 'Unassigned',
-            'evaluator' => $this->evaluator?->name ?? 'Unassigned',
-            'profile_photo' => $this->speaker?->profile_photo_url ?? '',
-            // 'workshop_id' => $this->workshop_id,
+            'speaker' => $this->whenLoaded('speaker', fn () => $this->speaker->name, 'Unassigned'),
+            'speaker_id' => $this->user_id,
+            'evaluator_id' => $this->evaluator_id,
+            'evaluator' => $this->whenLoaded('evaluator', fn () => $this->evaluator->name, 'Unassigned'),
+            'profile_photo' => $this->whenLoaded('speaker', fn () => $this->speaker?->profile_photo_url ?? ''),
         ];
     }
 }

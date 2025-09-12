@@ -39,7 +39,14 @@
             </PageHeading>
 
             <h1 class="mb-4 text-2xl font-bold"></h1>
-            <p><strong>By:</strong> {{ speech.speaker }}</p>
+            <p>
+                <strong>By:</strong>
+                <Link
+                    :href="route('users.show', { id: speech.speaker_id })"
+                    class="font-medium text-gray-900 dark:text-white"
+                    >{{ speech.speaker }}</Link
+                >
+            </p>
             <p><strong>Pathway:</strong> {{ speech.pathway }}</p>
             <p><strong>Level:</strong> {{ speech.level }}</p>
             <p><strong>Project:</strong> {{ speech.project }}</p>
@@ -55,7 +62,7 @@ import Container from '@/Components/Container.vue';
 import PageHeading from '@/Components/PageHeading.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { CheckIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid';
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
 // import { useRouter } from '@inertiajs/vue3';
 

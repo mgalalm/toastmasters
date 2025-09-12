@@ -9,10 +9,6 @@
                         {{ workshop.title }}
                     </h2>
                     <div class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
-                        <!-- <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <BriefcaseIcon class="mr-1.5 size-5 shrink-0 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-          Full-time
-        </div> -->
                         <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <MapPinIcon
                                 class="mr-1.5 size-5 shrink-0 text-gray-400 dark:text-gray-500"
@@ -20,10 +16,6 @@
                             />
                             {{ workshop.location }}
                         </div>
-                        <!-- <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <CurrencyDollarIcon class="mr-1.5 size-5 shrink-0 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-          $120k &ndash; $140k
-        </div> -->
                         <div class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-400">
                             <CalendarIcon
                                 class="mr-1.5 size-5 shrink-0 text-gray-400 dark:text-gray-500"
@@ -120,7 +112,7 @@
                         <div class="flex-1 truncate">
                             <div class="flex items-center space-x-3">
                                 <h3 class="truncate text-sm font-medium text-gray-900 dark:text-white">
-                                    {{ person.name }}
+                                    <Link :href="route('users.show', { id: person.user_id })">{{ person.name }}</Link>
                                 </h3>
                                 <span
                                     class="inline-flex shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20 dark:bg-green-500/10 dark:text-green-500 dark:ring-green-500/10"
@@ -139,7 +131,7 @@
                 </li>
             </ul>
             <h1 class="my-4 text-2xl font-bold">Speeches</h1>
-            <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <ul role="list" class="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
                 <li
                     v-for="speech in speeches"
                     :key="speech.id"
@@ -152,7 +144,9 @@
                             :src="speech.profile_photo"
                             alt=""
                         />
-                        <h3 class="mt-6 text-sm font-medium text-gray-900 dark:text-white">{{ speech.speaker }}</h3>
+                        <Link :href="route('users.show', { id: speech.speaker_id })" @click="$event.stopPropagation()">
+                            <h3 class="mt-6 text-sm font-medium text-gray-900 dark:text-white">{{ speech.speaker }}</h3>
+                        </Link>
                         <dl class="mt-1 flex grow flex-col justify-between">
                             <dt class="sr-only">Title</dt>
                             <dd class="text-sm text-gray-500 dark:text-gray-400">{{ speech.title }}</dd>
@@ -174,7 +168,14 @@
                                     @click.stop
                                 >
                                     <ScaleIcon class="size-7 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-                                    {{ speech.evaluator }}
+                                    <template v-if="speech.evaluator_id">
+                                        <Link :href="route('users.show', { id: speech.evaluator_id })">{{
+                                            speech.evaluator
+                                        }}</Link>
+                                    </template>
+                                    <template v-else>
+                                        <span class="text-gray-400 dark:text-gray-500">No evaluator</span>
+                                    </template>
                                 </a>
                             </div>
                         </div>
@@ -189,7 +190,7 @@
 import Container from '@/Components/Container.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import { CalendarIcon, CheckIcon, ChevronDownIcon, MapPinIcon, PencilIcon, ScaleIcon } from '@heroicons/vue/20/solid';
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 
 import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
@@ -231,5 +232,5 @@ const deleteWorkshop = async () => {
     });
 };
 
-// console.log(props.speeches);
+console.log(props.speeches);
 </script>

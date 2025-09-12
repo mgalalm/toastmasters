@@ -7,7 +7,7 @@
                     Back
                 </a>
             </nav>
-            <nav class="hidden sm:flex" aria-label="Breadcrumb">
+            <!-- <nav class="hidden sm:flex" aria-label="Breadcrumb">
                 <ol role="list" class="flex items-center space-x-4">
                     <li>
                         <div class="flex">
@@ -34,7 +34,7 @@
                         </div>
                     </li>
                 </ol>
-            </nav>
+            </nav> -->
         </div>
         <div class="mt-2 md:flex md:items-center md:justify-between">
             <div class="min-w-0 flex-1">
@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid';
+import { ChevronLeftIcon } from '@heroicons/vue/20/solid';
 defineProps({
     title: String,
 });

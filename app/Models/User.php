@@ -20,6 +20,10 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    // define roles as constants
+    public const ROLE_MEMBER = 'member';
+    public const ROLE_ADMIN = 'admin';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -58,10 +62,21 @@ class User extends Authenticatable
         return $this->hasMany(Speech::class);
     }
 
+    public function evaluations()
+    {
+        return $this->hasMany(Speech::class, 'evaluator_id');
+    }
+
     // is Admin
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    // assignments
+    public function assignments()
+    {
+        return $this->hasMany(WorkshopAssignment::class);
     }
 
     /**

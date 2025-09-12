@@ -18,13 +18,11 @@ class WorkshopAssignmentResource extends JsonResource
         return [
             'id' => $this->id,
             'workshop_id' => $this->workshop_id,
+            'workshop_title' => $this->whenLoaded('workshop')->title ?? null,
             'user_id' => $this->user_id,
-            'name' => $this->user->name ?? null,
-            'photo' => $this->user->profile_photo_url ?? null,
+            'name' => $this->whenLoaded('user')->name ?? null,
+            'photo' => $this->whenLoaded('user')->profile_photo_url ?? null,
             'role' => Str::of($this->role)->replace('_', ' '),
-            'notes' => $this->notes,
-            'workshop' => new WorkshopResource($this->whenLoaded('workshop')),
-            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }
