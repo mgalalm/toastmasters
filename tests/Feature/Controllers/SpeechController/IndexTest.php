@@ -31,6 +31,15 @@ it('Users can\'t see the other users\'speeches', function () {
 
 });
 
+// admin can see all speeches
+it('Admin can see all speeches', function () {
+    $admin = User::factory()->create(['role' => 'admin']);
+
+    $speeches = Speech::factory()->count(5)->create();
+    actingAs($admin)->get(route('speeches.index'))
+        ->assertHasPaginatedResource('speeches', SpeechResource::collection($speeches->reverse()));
+});
+
 it('should return the correct component', function () {
     $user = User::factory()->create();
     actingAs($user)->get(route('speeches.index'))
@@ -45,7 +54,6 @@ it('passes the speeches to the view', function () {
         )->create();
 
     $speeches = Speech::all();
-    $speeches->load(['speaker', 'evaluator']);
 
     actingAs($user)->get(route('speeches.index'))
         ->assertHasPaginatedResource('speeches', SpeechResource::collection($speeches->reverse()));

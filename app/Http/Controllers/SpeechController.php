@@ -17,7 +17,13 @@ class SpeechController extends Controller
      */
     public function index(Request $request)
     {
-        $speeches = $request->user()->speeches()->with(['speaker', 'evaluator'])->latest('id')->paginate(5);
+        $query = Speech::latest('id');
+
+        if (! $request->user()->isAdmin()) {
+            $query->where('user_id', $request->user()->id);
+        }
+
+        $speeches = $query->paginate(5);
 
         return inertia('Speeches/Index', [
             'speeches' => SpeechResource::collection($speeches),
