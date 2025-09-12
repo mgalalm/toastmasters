@@ -48,7 +48,14 @@ class WorkshopController extends Controller
 
         return inertia('Workshops/Show', [
             'workshop' => new WorkshopResource($workshop),
-            'assignments' => fn () => WorkshopAssignmentResource::collection($workshop->assignments()->with('user')->get()),
+            'assignments' => fn () => WorkshopAssignmentResource::collection($workshop->assignments()->with('user')->orderByRaw("
+        CASE role
+            WHEN 'president' THEN 1
+            WHEN 'TOAST_MASTER' THEN 2
+            WHEN 'TOPICS_MASTER' THEN 3
+            ELSE 99
+        END
+    ")->get()),
             'speeches' => fn () => SpeechResource::collection($workshop->speeches()->with(['speaker', 'evaluator'])->get()),
         ]);
     }

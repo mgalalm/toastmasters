@@ -39,27 +39,23 @@
             </PageHeading>
 
             <h1 class="mb-4 text-2xl font-bold"></h1>
+            <p><strong>By:</strong> {{ speech.speaker }}</p>
             <p><strong>Pathway:</strong> {{ speech.pathway }}</p>
+            <p><strong>Level:</strong> {{ speech.level }}</p>
+            <p><strong>Project:</strong> {{ speech.project }}</p>
+            <p class="mt-4"><strong>Objectives:</strong></p>
+            <p>{{ speech.objectives }}</p>
+            <p class="mt-4"><strong>Evaluator Notes:</strong></p>
+            <p>{{ speech.evaluator_notes }}</p>
         </Container>
     </AppLayout>
 </template>
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import Container from '@/Components/Container.vue';
 import PageHeading from '@/Components/PageHeading.vue';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/20/solid';
-import { router, usePage } from '@inertiajs/vue3';
-import {
-    BriefcaseIcon,
-    CalendarIcon,
-    CheckIcon,
-    ChevronDownIcon,
-    CurrencyDollarIcon,
-    LinkIcon,
-    MapPinIcon,
-    PencilIcon,
-    TrashIcon,
-} from '@heroicons/vue/20/solid';
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { CheckIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid';
+import { router } from '@inertiajs/vue3';
 
 // import { useRouter } from '@inertiajs/vue3';
 
