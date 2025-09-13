@@ -1,13 +1,13 @@
 <script setup>
-import { ref } from 'vue';
-import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
+import ConfirmationModalWrapper from '@/Components/ConfirmationModalWrapper.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import ConfirmationModalWrapper from '@/Components/ConfirmationModalWrapper.vue';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps({
     title: String,
@@ -44,24 +44,6 @@ const menu = [
         route: 'workshops.index',
         when: () => usePage().props.auth.user,
     },
-    // {
-    //     name: 'Add Workshop',
-    //     url: route('workshops.create'),
-    //     route: 'workshops.create',
-    //     // when: () => usePage().props.permissions.create_products,
-    // },
-    // {
-    //     name: 'Profile',
-    //     url: route('profile.show'),
-    //     route: 'profile.show',
-    //     when: () => usePage().props.auth.user,
-    // },
-    // {
-    //     name: 'API Tokens',
-    //     url: route('api-tokens.index'),
-    //     route: 'api-tokens.index',
-    //     when: () => usePage().props.jetstream.hasApiFeatures,
-    // },
     {
         name: 'Speeches',
         url: route('speeches.index'),
@@ -73,6 +55,12 @@ const menu = [
         url: route('speeches.create'),
         route: 'speeches.create',
         // when: () => usePage().props.permissions.create_products,
+    },
+    {
+        name: 'Users',
+        url: route('users.index'),
+        route: 'users.index',
+        when: () => usePage().props.auth.user && usePage().props.auth.user.role === 'admin',
     },
 ];
 </script>

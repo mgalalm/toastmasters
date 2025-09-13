@@ -30,9 +30,14 @@ class SpeechResource extends Resource
             ->schema([
                 TextInput::make('title')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Select::make('workshop_id')
+                    ->relationship('workshop', 'title')
+                    // ->orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(10)
+                    ->required(),
                 TextInput::make('length')
-                    ->required()
+                    // ->required()
                     ->maxLength(255),
                 // use enum for pathways
                 Select::make('pathway')
@@ -40,13 +45,14 @@ class SpeechResource extends Resource
                     ->options(
                         collect(array_column(PathWay::cases(), 'value', 'value')),
                     ),
-                Select::make('workshop_id')
-                    ->relationship('workshop', 'title')
-                    // ->orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED) ASC')->paginate(10)
-                    ->required(),
+
+                // level
+                TextInput::make('level')
+                    ->numeric(),
+                // ->required(),
                 // ->searchable(),
                 Textarea::make('objectives')
-                    ->required()
+                    // ->required()
                     ->columnSpanFull(),
                 Textarea::make('evaluator_notes')
                     ->columnSpanFull(),

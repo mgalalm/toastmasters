@@ -9,6 +9,16 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    // index method to list all users
+    public function index()
+    {
+        $users = User::orderBy('name')->paginate(10);
+
+        return inertia('Users/Index', [
+            'users' => UserResource::collection($users),
+        ]);
+    }
+
     public function show(User $user)
     {
         $speeches = $user->speeches()->get();

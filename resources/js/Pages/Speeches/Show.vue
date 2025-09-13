@@ -38,22 +38,83 @@
                 </template>
             </PageHeading>
 
-            <h1 class="mb-4 text-2xl font-bold"></h1>
-            <p>
-                <strong>By:</strong>
-                <Link
-                    :href="route('users.show', { id: speech.speaker_id })"
-                    class="font-medium text-gray-900 dark:text-white"
-                    >{{ speech.speaker }}</Link
-                >
-            </p>
-            <p><strong>Pathway:</strong> {{ speech.pathway }}</p>
-            <p><strong>Level:</strong> {{ speech.level }}</p>
-            <p><strong>Project:</strong> {{ speech.project }}</p>
-            <p class="mt-4"><strong>Objectives:</strong></p>
-            <p>{{ speech.objectives }}</p>
-            <p class="mt-4"><strong>Evaluator Notes:</strong></p>
-            <p>{{ speech.evaluator_notes }}</p>
+            <div>
+                <div class="mt-6 border-t border-gray-100 dark:border-white/10">
+                    <dl class="divide-y divide-gray-100 dark:divide-white/10">
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">By</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                <Link
+                                    :href="route('users.show', { id: speech.speaker_id })"
+                                    class="font-medium text-gray-900 dark:text-white"
+                                    >{{ speech.speaker }}</Link
+                                >
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Pathway</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                {{ speech.pathway }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Level</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                {{ speech.level }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Project</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                {{ speech.project }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Objectives</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                {{ speech.objectives }}
+                            </dd>
+                        </div>
+                        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                            <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Evaluator Notes</dt>
+                            <dd class="mt-1 text-sm/6 text-gray-700 sm:col-span-2 sm:mt-0 dark:text-gray-400">
+                                {{ speech.evaluator_notes }}
+                            </dd>
+                        </div>
+                        <!-- <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm/6 font-medium text-gray-900 dark:text-gray-100">Attachments</dt>
+          <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0 dark:text-white">
+            <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200 dark:divide-white/5 dark:border-white/10">
+              <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
+                <div class="flex w-0 flex-1 items-center">
+                  <PaperClipIcon class="size-5 shrink-0 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+                  <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                    <span class="truncate font-medium text-gray-900 dark:text-white">resume_back_end_developer.pdf</span>
+                    <span class="shrink-0 text-gray-400 dark:text-gray-500">2.4mb</span>
+                  </div>
+                </div>
+                <div class="ml-4 shrink-0">
+                  <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Download</a>
+                </div>
+              </li>
+              <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm/6">
+                <div class="flex w-0 flex-1 items-center">
+                  <PaperClipIcon class="size-5 shrink-0 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+                  <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                    <span class="truncate font-medium text-gray-900 dark:text-white">coverletter_back_end_developer.pdf</span>
+                    <span class="shrink-0 text-gray-400 dark:text-gray-500">4.5mb</span>
+                  </div>
+                </div>
+                <div class="ml-4 shrink-0">
+                  <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">Download</a>
+                </div>
+              </li>
+            </ul>
+          </dd>
+        </div> -->
+                    </dl>
+                </div>
+            </div>
         </Container>
     </AppLayout>
 </template>
