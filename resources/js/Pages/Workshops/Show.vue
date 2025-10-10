@@ -25,7 +25,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5 flex lg:ml-4 lg:mt-0">
+                <div class="mt-5 flex lg:ml-4 lg:mt-0 print:hidden">
                     <span class="hidden sm:block">
                         <button
                             type="button"
