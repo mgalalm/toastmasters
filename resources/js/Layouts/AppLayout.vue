@@ -60,7 +60,7 @@ const menu = [
         name: 'Users',
         url: route('users.index'),
         route: 'users.index',
-        when: () => usePage().props.auth.user && usePage().props.auth.user.role === 'admin',
+        when: () => usePage().props.auth.user && usePage().props.auth.user.is_admin,
     },
 ];
 </script>

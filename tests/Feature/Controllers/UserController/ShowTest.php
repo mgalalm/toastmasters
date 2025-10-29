@@ -18,6 +18,10 @@ it('can show user', function () {
 
 it('passes user to the view', function () {
     $user = User::factory()->create();
+
+    // load the user from the database
+
+    // dd($user->toArray());
     actingAs($user)
         ->get(route('users.show', $user))
         ->assertHasResource('user', UserResource::make($user));
@@ -48,7 +52,6 @@ it('doesn\'t show speech for anonymous users', function () {
         ->assertRedirect(route('login'));
 });
 
-// admin can view any user
 it('admin can view any user', function () {
     $admin = User::factory(
         ['role' => User::ROLE_ADMIN]

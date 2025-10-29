@@ -18,10 +18,10 @@ it('requires authentication', function () {
 });
 
 it('can store a speech', function () {
-
+    // dd($this->data);
     actingAs($this->user)->post(route('speeches.store'), $this->data)
         ->assertRedirect(route('speeches.index'));
-
+    // dd( $this->user->get());
     $this->assertDatabaseHas('speeches', [
         'title' => $this->data['title'],
         'length' => $this->data['length'],
@@ -67,3 +67,18 @@ it('requires a valid workshop id if provided', function ($value) {
 })->with([
     'invalid workshop id' => 999,
 ]);
+
+it('admin can store speech for another user', function () {
+    $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+    $otherUser = User::factory()->create();
+    $this->data['speaker'] = $otherUser->id;
+
+    actingAs($admin)->post(route('speeches.store'), $this->data)
+        ->assertRedirect(route('speeches.index'));
+
+    $this->assertDatabaseHas('speeches', [
+        'title' => $this->data['title'],
+        'length' => $this->data['length'],
+        'user_id' => $otherUser->id,
+    ]);
+});

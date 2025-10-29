@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\PathWay;
 use App\Http\Requests\SpeechRequest;
 use App\Http\Resources\SpeechResource;
+use App\Http\Resources\UserSelectResource;
 use App\Http\Resources\WorkshopSelectResource;
 use App\Models\Speech;
 use App\Models\Workshop;
@@ -19,7 +20,7 @@ class SpeechController extends Controller
     {
         $query = Speech::latest('id');
 
-        if (! $request->user()->isAdmin()) {
+        if (! $request->user()->is_admin) {
             $query->where('user_id', $request->user()->id);
         }
 
@@ -37,11 +38,14 @@ class SpeechController extends Controller
     {
         $workshops = Workshop::available()->get();
         $workshopId = $request->query('workshop_id');
+        $speakerId = $request->user()->id;
 
         return inertia('Speeches/Create', [
             'pathways' => PathWay::cases(),
             'workshops' => WorkshopSelectResource::collection($workshops),
             'workshop_id' => $workshopId,
+            'users' => UserSelectResource::collection($request->user()->all()),
+            'speaker_id' => $speakerId,
         ]);
     }
 
@@ -52,7 +56,8 @@ class SpeechController extends Controller
     {
         $data = $request->validated();
 
-        $request->user()->speeches()->create([
+        // dd($data);
+        Speech::create([
             ...$data,
         ]);
 
@@ -76,7 +81,7 @@ class SpeechController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Speech $speech)
+    public function edit(Speech $speech, Request $request)
     {
         // return the speech as a resource to inertia
         $workshops = Workshop::available()->get();
@@ -86,6 +91,7 @@ class SpeechController extends Controller
             'pathways' => PathWay::cases(),
             'workshops' => WorkshopSelectResource::collection($workshops),
             'isEdit' => true,
+            'users' => UserSelectResource::collection($request->user()->all()),
             'workshop_id' => $speech->workshop_id,
         ]);
     }

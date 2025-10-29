@@ -104,7 +104,63 @@
                             Write any notes you may want to pass to the evaluator about this talk.
                         </p>
                     </div>
+                    <!-- Admin Accordion -->
+                    <div v-if="isAdmin" class="my-6 border-t border-gray-200 pt-4">
+                        <!-- <div v-if="user.role === 'admin'" class="mt-6 border-t border-gray-200 pt-4"></div> -->
+                        <button
+                            @click="isOpen = !isOpen"
+                            type="button"
+                            class="flex w-full items-center justify-between text-left font-medium text-gray-700 hover:text-gray-900"
+                        >
+                            <div class="flex items-center space-x-2">
+                                <span>⚙️ Admin Controls</span>
+                            </div>
+                            <svg
+                                class="h-4 w-4 transition-transform duration-200"
+                                :class="{ 'rotate-180': isOpen }"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M19 9l-7 7-7-7"
+                                />
+                            </svg>
+                        </button>
 
+                        <div v-show="isOpen" class="mt-4 space-y-4 transition-all duration-300 ease-in-out">
+                            <!-- Speaker -->
+                            <div>
+                                <label class="mb-1 block text-sm font-medium text-gray-600">Speaker</label>
+                                <SelectInput
+                                    :options="users"
+                                    label="name"
+                                    :search="true"
+                                    value-prop="id"
+                                    v-model="speechForm.speaker"
+                                    allow-absent
+                                    :track-by="name"
+                                    placeholder="Select or search speaker"
+                                />
+                            </div>
+
+                            <!-- Evaluator -->
+                            <div>
+                                <label class="mb-1 block text-sm font-medium text-gray-600">Evaluator</label>
+                                <SelectInput
+                                    :options="users"
+                                    label="name"
+                                    v-model="speechForm.evaluator_id"
+                                    value-prop="id"
+                                    placeholder="Select or search evaluator"
+                                    :search="true"
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <div class="flex justify-end">
                         <button
                             type="button"
@@ -134,11 +190,13 @@ import SelectInput from '@/Components/SelectInput.vue';
 import TextArea from '@/Components/TextArea.vue';
 import TextInput from '@/Components/TextInput.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { useForm } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
+import { computed, onMounted, ref } from 'vue';
+
+const page = usePage();
+const isAdmin = computed(() => page.props.auth.user?.is_admin);
 
 const showDatePicker = ref(false);
-
 const toggleDatePicker = () => {
     showDatePicker.value = !showDatePicker.value;
 };
@@ -168,6 +226,14 @@ const props = defineProps({
         type: [Number, null],
         default: null,
     },
+    users: {
+        type: Array,
+        default: () => [],
+    },
+    speaker_id: {
+        type: [Number, null],
+        default: null,
+    },
 });
 
 const minDate = computed(() => {
@@ -180,8 +246,12 @@ const maxDate = computed(() => {
     return new Date(props.workshops[props.workshops.length - 1].date); // last workshop
 });
 
+const isOpen = ref(false);
+
 const speechForm = useForm({
     title: props.speech.title || '',
+    speaker: props.speech.speaker_id || props.speaker_id || null,
+    evaluator_id: props.speech.evaluator_id || null,
     pathway: props.speech.pathway || '',
     length: props.speech.length || '',
     objectives: props.speech.objectives || '',
@@ -209,10 +279,16 @@ const workshopDate = computed({
 });
 
 const submit = () => {
+    console.log('Submitting form with data:', speechForm.data());
     props.isEdit ? speechForm.put(route('speeches.update', props.speech)) : speechForm.post(route('speeches.store'));
 };
 
 const cancel = () => {
     window.history.back();
 };
+
+onMounted(() => {
+    // Preselect speaker if speaker_id prop is provided
+    // console.log('Props:', page.props.auth);
+});
 </script>

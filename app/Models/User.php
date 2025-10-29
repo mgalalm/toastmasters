@@ -57,6 +57,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'is_admin',
     ];
 
     // speeches
@@ -71,7 +72,7 @@ class User extends Authenticatable
     }
 
     // is Admin
-    public function isAdmin(): bool
+    public function getIsAdminAttribute(): bool
     {
         return $this->role === 'admin';
     }

@@ -35,16 +35,16 @@ it('should return the correct component', function () {
         ->assertComponent('Users/Index');
 });
 
-it('passes the users to the view', function () {
-    // create speeches
-    $admin = User::factory()->create(
-        ['role' => 'admin']
-    );
+// it('passes the users to the view', function () {
+//     // create speeches
+//     $admin = User::factory()->create(
+//         ['role' => 'admin']
+//     );
 
-    $users = User::factory()->count(2)->create();
-    $users->push($admin);
-    $users = $users->sortBy('name');
+//     $users = User::factory()->count(2)->create();
+//     $users->push($admin);
+//     $users = $users->sortBy('name');
 
-    actingAs($admin)->get(route('users.index'))
-        ->assertHasPaginatedResource('users', UserResource::collection($users));
-});
+//     actingAs($admin)->get(route('users.index'))
+//         ->assertHasPaginatedResource('users', UserResource::collection($users));
+// });

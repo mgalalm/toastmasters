@@ -30,6 +30,9 @@ class WorkshopAssignmentResource extends Resource
             ->schema([
                 Select::make('workshop_id')
                     ->relationship('workshop', 'title', fn ($query) => $query->orderByRaw('CAST(SUBSTRING_INDEX(title, " ", -1) AS UNSIGNED)'))
+                    ->getOptionLabelFromRecordUsing(
+                        fn ($record) => $record->title . ' (' . $record->date . ')'
+                    )
                     // ->searchable()
                     ->required(),
 

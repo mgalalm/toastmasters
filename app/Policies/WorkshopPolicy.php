@@ -37,7 +37,7 @@ class WorkshopPolicy
     public function update(User $user, Workshop $workshop): bool
     {
         // only if admin
-        return $user->isAdmin();
+        return $user->is_admin;
     }
 
     /**
