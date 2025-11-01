@@ -71,10 +71,12 @@ class SpeechController extends Controller
     {
 
         // return the speech as a resource to inertia
-        $speech->load(['speaker', 'evaluator']);
+        $speech->load(['speaker', 'evaluator', 'workshop:id,title']);
 
+        // dd($speech->workshop->ge);
         return inertia('Speeches/Show', [
             'speech' => new SpeechResource($speech),
+            // 'workshop' => $speech->workshop?->title,
         ]);
     }
 

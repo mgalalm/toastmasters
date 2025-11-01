@@ -29,7 +29,13 @@
                     <span class="hidden sm:block">
                         <button
                             type="button"
-                            class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:ring-white/5 dark:hover:bg-white/20"
+                            :disabled="speeches.length >= 3"
+                            :class="[
+                                'inline-flex items-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm',
+                                speeches.length >= 3
+                                    ? 'cursor-not-allowed bg-gray-200 text-gray-500 dark:bg-gray-700/40 dark:text-gray-400 dark:shadow-none'
+                                    : 'bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:shadow-none dark:ring-white/5 dark:hover:bg-white/20',
+                            ]"
                             @click="router.get(route('speeches.create', { workshop_id: workshop.id }))"
                         >
                             <PencilIcon

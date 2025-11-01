@@ -29,6 +29,8 @@ class SpeechResource extends JsonResource
             'evaluator_id' => $this->evaluator_id,
             'evaluator' => $this->whenLoaded('evaluator', fn () => $this->evaluator->name, 'Unassigned'),
             'profile_photo' => $this->whenLoaded('speaker', fn () => $this->speaker?->profile_photo_url ?? ''),
+            'workshop_id' => $this->workshop_id,
+            'workshop_title' => $this->whenLoaded('workshop', fn () => $this->workshop->title ?? 'No Workshop'),
         ];
     }
 }
