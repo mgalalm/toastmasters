@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\SpeechResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkshopAssignmentResource;
@@ -52,6 +53,37 @@ class UserController extends Controller
             'evaluations' => SpeechResource::collection($user->evaluations()->get()),
             'assignments' => WorkshopAssignmentResource::collection($user->assignments()->with('workshop')->get()),
         ]);
+    }
+
+    public function edit(User $user)
+    {
+        return inertia('Users/Create', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+                'active' => (bool) $user->active,
+                'profile_photo_path' => $user->profile_photo_path,
+            ],
+            'isEdit' => true,
+        ]);
+    }
+
+    public function update(UserUpdateRequest $request, User $user)
+    {
+        $data = $request->validated();
+
+        $user->update([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'active' => $data['active'],
+            'profile_photo_path' => $data['profile_photo_path'] ?: null,
+            ...($request->filled('password') ? ['password' => Hash::make($data['password'])] : []),
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
     // delete method to remove a user

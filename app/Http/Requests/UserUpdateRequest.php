@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,14 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore($this->route('user')),
+            ],
             'role' => ['required', Rule::in(['member', 'admin'])],
-            'password' => 'required|string|min:8',
+            'password' => 'nullable|string|min:8',
             'profile_photo_path' => 'nullable|string|max:2048',
             'active' => 'required|boolean',
         ];

@@ -11,12 +11,12 @@
                         </p>
                     </div>
                     <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button
-                            type="button"
+                        <Link
+                            :href="route('users.create')"
                             class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
                         >
                             Add user
-                        </button>
+                        </Link>
                     </div>
                 </div>
                 <div class="mt-8 flow-root">
@@ -151,10 +151,10 @@
                                             </td>
                                             <td class="whitespace-nowrap py-5 pl-3 pr-6 text-right text-sm font-medium">
                                                 <Link
-                                                    :href="route('users.show', user.id)"
+                                                    :href="route('users.edit', user.id)"
                                                     class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
                                                 >
-                                                    View<span class="sr-only">, {{ user.name }}</span>
+                                                    Edit<span class="sr-only">, {{ user.name }}</span>
                                                 </Link>
                                             </td>
                                         </tr>

@@ -3,7 +3,7 @@
         <Container>
             <div class="mx-auto max-w-2xl p-4">
                 <div class="mb-6 flex items-center justify-between">
-                    <h1 class="text-2xl font-bold">Create User</h1>
+                    <h1 class="text-2xl font-bold">{{ isEdit ? 'Edit User' : 'Create User' }}</h1>
                 </div>
 
                 <form @submit.prevent="submit">
@@ -45,13 +45,13 @@
                     </div>
 
                     <div class="mt-4">
-                        <InputLabel for="password" value="Password" />
+                        <InputLabel :value="isEdit ? 'Password (leave blank to keep)' : 'Password'" for="password" />
                         <TextInput
                             id="password"
                             v-model="userForm.password"
                             type="password"
                             class="mt-1 block w-full"
-                            autocomplete="new-password"
+                            :autocomplete="isEdit ? 'current-password' : 'new-password'"
                         />
                         <InputError :message="userForm.errors.password" class="mt-1" />
                     </div>
@@ -112,16 +112,32 @@ const roleOptions = [
     { label: 'Admin', value: 'admin' },
 ];
 
+const props = defineProps({
+    user: {
+        type: Object,
+        default: () => ({}),
+    },
+    isEdit: {
+        type: Boolean,
+        default: false,
+    },
+});
+
 const userForm = useForm({
-    name: '',
-    email: '',
-    role: 'member',
+    name: props.user.name || '',
+    email: props.user.email || '',
+    role: props.user.role || 'member',
     password: '',
-    profile_photo_path: '',
-    active: true,
+    profile_photo_path: props.user.profile_photo_path || '',
+    active: props.user.active ?? true,
 });
 
 const submit = () => {
+    if (props.isEdit) {
+        userForm.put(route('users.update', props.user.id));
+        return;
+    }
+
     userForm.post(route('users.store'));
 };
 
