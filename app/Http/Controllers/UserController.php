@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserStoreRequest;
 use App\Http\Resources\SpeechResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkshopAssignmentResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,6 +19,27 @@ class UserController extends Controller
         return inertia('Users/Index', [
             'users' => UserResource::collection($users),
         ]);
+    }
+
+    public function create()
+    {
+        return inertia('Users/Create');
+    }
+
+    public function store(UserStoreRequest $request)
+    {
+        $data = $request->validated();
+
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'password' => Hash::make($data['password']),
+            'profile_photo_path' => $data['profile_photo_path'] ?: null,
+            'active' => $data['active'],
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
     public function show(User $user)

@@ -17,7 +17,7 @@ it('can show speech', function () {
 
 it('passes speech to the view', function () {
     $speech = Speech::factory()->create();
-    $speech->load(['speaker', 'evaluator']);
+    $speech->load(['speaker', 'evaluator', 'workshop:id,title']);
     actingAs($speech->speaker)
         ->get(route('speeches.show', $speech))
         ->assertHasResource('speech', SpeechResource::make($speech));
