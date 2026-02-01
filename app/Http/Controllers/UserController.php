@@ -12,7 +12,7 @@ class UserController extends Controller
     // index method to list all users
     public function index()
     {
-        $users = User::orderBy('name')->paginate(10);
+        $users = User::orderBy('active', 'desc')->orderBy('name', 'asc')->with(['assignments', 'speeches'])->paginate(16);
 
         return inertia('Users/Index', [
             'users' => UserResource::collection($users),
@@ -29,5 +29,13 @@ class UserController extends Controller
             'evaluations' => SpeechResource::collection($user->evaluations()->get()),
             'assignments' => WorkshopAssignmentResource::collection($user->assignments()->with('workshop')->get()),
         ]);
+    }
+
+    // delete method to remove a user
+    public function destroy(User $user)
+    {
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

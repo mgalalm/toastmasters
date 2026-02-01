@@ -47,6 +47,7 @@ Route::middleware([
     Route::put('workshops/{workshop}', [WorkshopController::class, 'update'])->name('workshops.update')->can('update', 'workshop');
     Route::delete('workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy')->can('delete', 'workshop');
     Route::get('users/{user}', [UserController::class, 'show'])->name('users.show')->can('view', 'user');
+    Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->can('delete', 'user');
     Route::get('users', [UserController::class, 'index'])->name('users.index')->can('viewAny', User::class);
 
 });

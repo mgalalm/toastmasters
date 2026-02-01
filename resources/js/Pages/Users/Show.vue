@@ -4,7 +4,7 @@
             <PageHeading :title="user.name">
                 <template #actions>
                     <span class="hidden sm:block">
-                        <form @submit.prevent="deleteSpeech">
+                        <form @submit.prevent="deleteUser">
                             <button
                                 type="submit"
                                 class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -164,7 +164,10 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { CheckIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid';
 import { Link, router } from '@inertiajs/vue3';
 
+import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import { PaperClipIcon } from '@heroicons/vue/20/solid';
+
+const { confirmation } = useConfirm();
 
 const props = defineProps({
     user: {
@@ -187,4 +190,24 @@ const props = defineProps({
 
 console.log('User props:', props.assignments);
 console.log('Evaluations props:', props.evaluations);
+
+const deleteUser = async () => {
+    if (
+        !(await confirmation(
+            'Are you sure you want to delete this user?',
+            'This action cannot be undone.',
+            'Delete User',
+        ))
+    )
+        return;
+
+    router.delete(route('users.destroy', props.user.id), {
+        onSuccess: () => {
+            console.log('User deleted successfully');
+        },
+        onError: (error) => {
+            console.error('Error deleting user:', error);
+        },
+    });
+};
 </script>

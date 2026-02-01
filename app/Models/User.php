@@ -96,4 +96,13 @@ class User extends Authenticatable
             'active' => 'boolean',
         ];
     }
+
+    // speeches
+    // public function speeches()
+    // {
+    //     return $this->hasMany(Speech::class);
+    // }
+
+    // assignments
+
 }

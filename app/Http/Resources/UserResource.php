@@ -23,6 +23,9 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'active' => (bool) $this->active,
             'role' => $this->role,
+            'assignments' => $this->whenLoaded('assignments'),
+            'speeches' => $this->whenLoaded('speeches'),
+            // 'assignments_count' => $this->assignments()->count(),
         ];
     }
 }
