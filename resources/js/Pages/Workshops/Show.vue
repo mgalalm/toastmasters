@@ -48,13 +48,13 @@
 
                     <div class="flex justify-between">
                         <span class="sm:ml-3">
-                            <button
-                                type="button"
+                            <Link
+                                :href="route('assignments.create', { workshop_id: workshop.id })"
                                 class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:shadow-none dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
                             >
-                                <CheckIcon class="-ml-0.5 mr-1.5 size-5" aria-hidden="true" />
-                                Publish
-                            </button>
+                                <ScaleIcon class="-ml-0.5 mr-1.5 size-5" aria-hidden="true" />
+                                Add Role
+                            </Link>
                         </span>
                     </div>
 
@@ -127,11 +127,18 @@
                             </div>
                             <p class="mt-1 truncate text-sm text-gray-500 dark:text-gray-400">{{ person.title }}</p>
                         </div>
-                        <img
-                            class="size-10 shrink-0 rounded-full bg-gray-300 outline outline-1 -outline-offset-1 outline-black/5 dark:bg-gray-700 dark:outline-white/10"
-                            :src="person.photo"
-                            alt=""
-                        />
+                        <div class="flex items-center gap-3">
+                            <button
+                                v-if="isAdmin"
+                                type="button"
+                                class="inline-flex size-10 items-center justify-center rounded-full bg-gray-50 text-gray-400 ring-1 ring-inset ring-gray-200 hover:bg-red-50 hover:text-red-600 hover:ring-red-200 focus:outline-none focus:ring-2 focus:ring-red-500/40 dark:bg-gray-800/60 dark:text-gray-500 dark:ring-white/10 dark:hover:bg-red-500/10 dark:hover:text-red-400 dark:hover:ring-red-500/20"
+                                :aria-label="`Unassign ${person.name}`"
+                                title="Unassign"
+                                @click.prevent="confirmUnassign(person)"
+                            >
+                                <XMarkIcon class="size-5" aria-hidden="true" />
+                            </button>
+                        </div>
                     </div>
                     <div></div>
                 </li>
@@ -195,13 +202,16 @@
 <script setup>
 import Container from '@/Components/Container.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { CalendarIcon, CheckIcon, ChevronDownIcon, MapPinIcon, PencilIcon, ScaleIcon } from '@heroicons/vue/20/solid';
-import { Link, router } from '@inertiajs/vue3';
+import { CalendarIcon, ChevronDownIcon, MapPinIcon, PencilIcon, ScaleIcon, XMarkIcon } from '@heroicons/vue/20/solid';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
 import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue';
 
 const { confirmation } = useConfirm();
+const page = usePage();
+const isAdmin = computed(() => page.props.auth?.user?.is_admin);
 
 const props = defineProps({
     workshop: {
@@ -217,6 +227,21 @@ const props = defineProps({
         required: true,
     },
 });
+
+const confirmUnassign = async (assignment) => {
+    if (
+        !(await confirmation(
+            'Remove assignment?',
+            'This will unassign the user from this workshop role.',
+            'Remove Assignment',
+        ))
+    )
+        return;
+
+    router.delete(route('assignments.destroy', assignment.id), {
+        preserveScroll: true,
+    });
+};
 
 const deleteWorkshop = async () => {
     if (

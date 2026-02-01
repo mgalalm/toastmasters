@@ -35,6 +35,15 @@
                             Publish
                         </button>
                     </span>
+
+                    <span class="sm:ml-3">
+                        <Link
+                            :href="route('assignments.create', { user_id: speech.speaker_id })"
+                            class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-transparent dark:text-indigo-400 dark:ring-white/10 dark:hover:text-indigo-300"
+                        >
+                            Assign Role
+                        </Link>
+                    </span>
                 </template>
             </PageHeading>
 

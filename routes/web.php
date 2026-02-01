@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SpeechController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkshopAssignmentController;
 use App\Http\Controllers\WorkshopController;
 use App\Models\Speech;
 use App\Models\User;
@@ -46,6 +47,15 @@ Route::middleware([
     Route::get('workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->name('workshops.edit')->can('update', 'workshop');
     Route::put('workshops/{workshop}', [WorkshopController::class, 'update'])->name('workshops.update')->can('update', 'workshop');
     Route::delete('workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy')->can('delete', 'workshop');
+    Route::get('assignments/create', [WorkshopAssignmentController::class, 'create'])
+        ->name('assignments.create')
+        ->can('viewAny', User::class);
+    Route::post('assignments', [WorkshopAssignmentController::class, 'store'])
+        ->name('assignments.store')
+        ->can('viewAny', User::class);
+    Route::delete('assignments/{assignment}', [WorkshopAssignmentController::class, 'destroy'])
+        ->name('assignments.destroy')
+        ->can('viewAny', User::class);
     Route::get('users/create', [UserController::class, 'create'])->name('users.create')->can('create', User::class);
     Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit')->can('update', 'user');
     Route::get('users/{user}', [UserController::class, 'show'])->name('users.show')->can('view', 'user');
