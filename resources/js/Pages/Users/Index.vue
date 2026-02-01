@@ -2,29 +2,29 @@
     <AppLayout>
         <Container>
             <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="sm:flex-auto">
-                        <h1 class="text-base font-semibold text-gray-900 dark:text-white">Users</h1>
-                        <p class="mt-2 text-sm text-gray-700 dark:text-gray-300">
-                            A list of all the users in your account including their name, email, status, role, and
-                            assignments.
-                        </p>
-                    </div>
-                    <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <Link
-                            :href="route('users.create')"
-                            class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
-                        >
-                            Add user
-                        </Link>
-                    </div>
-                </div>
-                <div class="mt-8 flow-root">
-                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                            <div
-                                class="overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-white/10 dark:bg-gray-900"
+                <div
+                    class="mt-6 overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-white/10 dark:bg-gray-900"
+                >
+                    <div class="flex flex-col gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <h1 class="text-base font-semibold text-gray-900 dark:text-white">Users</h1>
+                            <p class="mt-1 text-sm text-gray-700 dark:text-gray-300">
+                                A list of all the users in your account including their name, email, status, role, and
+                                assignments.
+                            </p>
+                        </div>
+                        <div class="shrink-0">
+                            <Link
+                                :href="route('users.create')"
+                                class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
                             >
+                                Add user
+                            </Link>
+                        </div>
+                    </div>
+                    <div class="flow-root">
+                        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                                 <table class="relative min-w-full divide-y divide-gray-300 dark:divide-white/15">
                                     <thead>
                                         <tr>
