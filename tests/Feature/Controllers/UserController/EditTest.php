@@ -42,5 +42,5 @@ it('admin can update a user', function () {
             'profile_photo_path' => '',
             'active' => true,
         ])
-        ->assertRedirect(route('users.index'));
+        ->assertRedirect(route('users.show', $user));
 });

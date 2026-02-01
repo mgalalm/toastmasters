@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -81,6 +82,34 @@ class User extends Authenticatable
     public function assignments()
     {
         return $this->hasMany(WorkshopAssignment::class);
+    }
+
+    public function scopeRoleFilter(Builder $query, ?string $roleMode, array $roles): Builder
+    {
+        if ($roleMode === 'never' && count($roles) > 0) {
+            $query->whereDoesntHave('assignments', function (Builder $builder) use ($roles) {
+                $builder->whereIn('role', $roles);
+            });
+        }
+
+        return $query;
+    }
+
+    public function scopeActiveFilter(Builder $query, ?string $active): Builder
+    {
+        if ($active === null || $active === '') {
+            return $query;
+        }
+
+        if ($active === '1' || $active === 1 || $active === true) {
+            return $query->where('active', true);
+        }
+
+        if ($active === '0' || $active === 0 || $active === false) {
+            return $query->where('active', false);
+        }
+
+        return $query;
     }
 
     /**

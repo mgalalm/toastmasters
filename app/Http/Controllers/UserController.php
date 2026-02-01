@@ -8,17 +8,38 @@ use App\Http\Resources\SpeechResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\WorkshopAssignmentResource;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     // index method to list all users
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('active', 'desc')->orderBy('name', 'asc')->with(['assignments', 'speeches'])->paginate(16);
+        $roles = Arr::wrap($request->input('roles', []));
+        $roleMode = $request->string('role_mode')->toString();
+        $active = $request->input('active');
+
+        if (! in_array($active, ['0', '1'], true)) {
+            $active = null;
+        }
+
+        $users = User::orderBy('active', 'desc')
+            ->orderBy('name', 'asc')
+            ->with(['assignments', 'speeches'])
+            ->roleFilter($roleMode, $roles)
+            ->activeFilter($active)
+            ->paginate(16)
+            ->withQueryString();
 
         return inertia('Users/Index', [
             'users' => UserResource::collection($users),
+            'filters' => [
+                'role_mode' => $roleMode ?: null,
+                'roles' => $roles,
+                'active' => $active,
+            ],
         ]);
     }
 
@@ -83,7 +104,7 @@ class UserController extends Controller
             ...($request->filled('password') ? ['password' => Hash::make($data['password'])] : []),
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        return redirect()->route('users.show', $user)->with('success', 'User updated successfully.');
     }
 
     // delete method to remove a user

@@ -19,20 +19,10 @@
                         <button
                             type="button"
                             class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                            @click="router.visit(route('speeches.edit', speech.id))"
+                            @click="router.visit(route('users.edit', user.id))"
                         >
                             <PencilIcon class="-ml-0.5 mr-1.5 size-5 text-gray-400" aria-hidden="true" />
                             Edit
-                        </button>
-                    </span>
-
-                    <span class="sm:ml-3">
-                        <button
-                            type="button"
-                            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            <CheckIcon class="-ml-0.5 mr-1.5 size-5" aria-hidden="true" />
-                            Publish
                         </button>
                     </span>
                 </template>
@@ -161,7 +151,7 @@
 import Container from '@/Components/Container.vue';
 import PageHeading from '@/Components/PageHeading.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { CheckIcon, PencilIcon, TrashIcon } from '@heroicons/vue/20/solid';
+import { PencilIcon, TrashIcon } from '@heroicons/vue/20/solid';
 import { Link, router } from '@inertiajs/vue3';
 
 import { useConfirm } from '@/Utilities/Composables/useConfirm';

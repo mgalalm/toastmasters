@@ -13,13 +13,77 @@
                                 assignments.
                             </p>
                         </div>
-                        <div class="shrink-0">
-                            <Link
-                                :href="route('users.create')"
-                                class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
-                            >
-                                Add user
-                            </Link>
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <div
+                                    class="inline-flex overflow-hidden rounded-md shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-white/10"
+                                >
+                                    <button
+                                        type="button"
+                                        class="px-3 py-2 text-sm font-semibold"
+                                        :class="
+                                            activeFilter === '1'
+                                                ? 'bg-indigo-600 text-white'
+                                                : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20'
+                                        "
+                                        @click="toggleActive('1')"
+                                    >
+                                        Active
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="px-3 py-2 text-sm font-semibold"
+                                        :class="
+                                            activeFilter === '0'
+                                                ? 'bg-indigo-600 text-white'
+                                                : 'bg-white text-gray-700 hover:bg-gray-50 dark:bg-white/10 dark:text-gray-200 dark:hover:bg-white/20'
+                                        "
+                                        @click="toggleActive('0')"
+                                    >
+                                        Inactive
+                                    </button>
+                                </div>
+                                <label class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <Checkbox v-model:checked="neverAssigned" />
+                                    Never assigned
+                                </label>
+                                <div :class="neverAssigned ? '' : 'opacity-60'">
+                                    <SelectInput
+                                        class="min-w-[220px]"
+                                        mode="tags"
+                                        :close-on-select="false"
+                                        :search="true"
+                                        :options="roleOptions"
+                                        label="label"
+                                        value-prop="value"
+                                        placeholder="Select roles"
+                                        :disabled="!neverAssigned"
+                                        v-model="selectedRoles"
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 dark:bg-white/10 dark:text-white dark:ring-white/10 dark:hover:bg-white/20"
+                                    @click="applyFilters"
+                                >
+                                    Apply
+                                </button>
+                                <button
+                                    type="button"
+                                    class="rounded-md px-3 py-2 text-sm font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                                    @click="clearFilters"
+                                >
+                                    Clear
+                                </button>
+                            </div>
+                            <div class="shrink-0">
+                                <Link
+                                    :href="route('users.create')"
+                                    class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:bg-indigo-500 dark:hover:bg-indigo-400 dark:focus-visible:outline-indigo-500"
+                                >
+                                    Add user
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     <div class="flow-root">
@@ -182,10 +246,12 @@
 </template>
 
 <script setup>
+import Checkbox from '@/Components/Checkbox.vue';
 import Pagination from '@/Components/Pagination.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
+import SelectInput from '@/Components/SelectInput.vue';
 
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ClipboardIcon } from '@heroicons/vue/20/solid';
 import { ref } from 'vue';
 
@@ -193,6 +259,10 @@ const props = defineProps({
     users: {
         type: Object,
         required: true,
+    },
+    filters: {
+        type: Object,
+        default: () => ({}),
     },
 });
 
@@ -204,11 +274,20 @@ const roleMeta = {
     WORD_MASTER: { label: 'Word Master', icon: '📝' },
 };
 
+const roleOptions = Object.entries(roleMeta).map(([value, meta]) => ({
+    value,
+    label: meta.label,
+}));
+
 const roleLegend = Object.entries(roleMeta).map(([key, meta]) => ({
     key,
     label: meta.label,
     icon: meta.icon,
 }));
+
+const activeFilter = ref(props.filters.active ?? '');
+const selectedRoles = ref(props.filters.roles ?? []);
+const neverAssigned = ref(props.filters.role_mode === 'never');
 
 const normalizeRoleKey = (role) => (role || 'UNKNOWN').replace(/\s+/g, '_').toUpperCase();
 
@@ -240,6 +319,37 @@ const maskEmail = (email) => {
     if (!domain) return '••••••••';
     const nameMasked = name.length <= 2 ? `${name[0] ?? ''}•` : `${name[0]}••••${name[name.length - 1]}`;
     return `${nameMasked}@${domain}`;
+};
+
+const applyFilters = () => {
+    const params = {};
+
+    if (neverAssigned.value && selectedRoles.value.length > 0) {
+        params.role_mode = 'never';
+        params.roles = selectedRoles.value;
+    }
+
+    if (activeFilter.value !== '' && activeFilter.value !== null) {
+        params.active = activeFilter.value;
+    }
+
+    if (Object.keys(params).length === 0) {
+        router.get(route('users.index'), {}, { preserveScroll: true, preserveState: true, replace: true });
+        return;
+    }
+
+    router.get(route('users.index'), params, { preserveScroll: true, preserveState: true, replace: true });
+};
+
+const clearFilters = () => {
+    selectedRoles.value = [];
+    neverAssigned.value = false;
+    activeFilter.value = '';
+    router.get(route('users.index'), {}, { preserveScroll: true, preserveState: true, replace: true });
+};
+
+const toggleActive = (value) => {
+    activeFilter.value = activeFilter.value === value ? '' : value;
 };
 
 const copiedUserId = ref(null);
